@@ -1,20 +1,20 @@
 ==============================================================
   PABRIK OTOMASI AI: HASIL ANALISIS GEMINI AI & TREN REAL-TIME
-  Waktu Eksekusi: 2026-08-26 19:01:38
+  Waktu Eksekusi: 2026-08-26 19:04:30
 ==============================================================
 
 --- [DATA TREN REAL-TIME] ---
 1. Persiapan Massa AMPB Jelang Aksi Damai di Depan Gedung DPR - detikNews
 2. Iran Ancam Setop Ekspor Minyak di Teluk Buntut Sanksi Baru AS - detikNews
-3. Akhirnya, Bank Mandiri Aktifkan Lagi Rekening Mas Botok Pati untuk Aksi 27 Agustus - AFU.id
-4. ☀️ Pemerintah Mulai Bangun Program PLTS 100 GWp, Target Rampung dalam 3 Tahun - Stockbit Snips
-5. Prabowo ke Korban Gempa NTT: MBG Mau Diteruskan atau Tidak? - Kompas.com
+3. Polda Metro Jaya Pastikan Rekening Botok Pati Sudah Bisa Dibuka Lagi - detikNews
+4. Prabowo ke Korban Gempa NTT: MBG Mau Diteruskan atau Tidak? - Kompas.com
+5. ☀️ Pemerintah Mulai Bangun Program PLTS 100 GWp, Target Rampung dalam 3 Tahun - Stockbit Snips
 
 ==============================================================
 --- [ANALYSIS & GENERATION BY GEMINI AI] ---
 ==============================================================
 
-Error Gemini API: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.6-flash for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error Gemini API: 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash is no longer available. Please update your code to use models/gemini-3.6-flash for the latest features and improvements.', 'status': 'NOT_FOUND'}}
 
 ==============================================================
  Generated Automatically by GitHub Actions & Gemini API
