@@ -2,9 +2,9 @@ name: AI Daily Trend Research
 
 on:
   schedule:
-    # Berjalan otomatis setiap hari (06:00 WIB)
+    # Berjalan otomatis setiap jam 06:00 WIB (23:00 UTC)
     - cron: '0 23 * * *' 
-  workflow_dispatch: # Memungkinkan eksekusi manual kapan pun dari web GitHub
+  workflow_dispatch:
 
 jobs:
   run-automation:
@@ -25,3 +25,11 @@ jobs:
       - name: Run AI Research Script
         run: |
           python main.py
+
+      - name: Commit and Push Report File
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Auto-update daily research report"
+          git push
