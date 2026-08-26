@@ -2,7 +2,7 @@ import os
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import requests
-from google import genai
+import google.generativeai as genai
 
 def ambil_tren_realtime():
     """Mengambil 5 tren terkini secara real-time dari Google News RSS"""
@@ -25,7 +25,7 @@ def analisis_dengan_gemini(tren_list):
         print("PERINGATAN: GEMINI_API_KEY tidak ditemukan!")
         return "Gagal analisis: API Key tidak tersedia."
 
-    client = genai.Client(api_key=api_key)
+    genai.configure(api_key=api_key)
     
     daftar_tren_str = "\n".join([f"- {t}" for t in tren_list])
     
@@ -49,10 +49,8 @@ def analisis_dengan_gemini(tren_list):
     """
     
     try:
-        response = client.models.generate_content(
-            model='gemini-1.5-flash',
-            contents=prompt,
-        )
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
         return response.text
     except Exception as e:
         print(f"Error saat memanggil Gemini API: {e}")
