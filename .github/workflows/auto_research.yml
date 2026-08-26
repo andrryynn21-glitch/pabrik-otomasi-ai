@@ -20,9 +20,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install requests
+          pip install requests google-genai
 
       - name: Run AI Research Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python main.py
 
@@ -31,5 +33,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
           git add .
-          git diff-index --quiet HEAD || git commit -m "Auto-update daily research report"
+          git diff-index --quiet HEAD || git commit -m "Auto-update daily AI research report"
           git push
