@@ -39,14 +39,17 @@ def run_research():
         print("-> Error: OPENROUTER_API_KEY tidak ditemukan di environment.")
         return
 
-    prompt_text = (
+   prompt_text = (
         "Kamu adalah pakar strategi konten komedi sosial media dan penulisan skrip kreatif untuk akun @candatawamu26.\n"
         "Tugas utama kamu adalah memberikan laporan riset tren harian dan draft skrip komedi berkualitas tinggi.\n\n"
-        "Berikan output dengan struktur berikut:\n"
-        "1. 📊 TRENDING TOPIC HARI INI: Rangkuman 2-3 topik/isu/relate moment yang sedang ramai di Indonesia saat ini.\n"
-        "2. 🎭 IDE KONTEN KOMEDI (POV/Jokes): Buat 2 konsep skrip komedi singkat khas @candatawamu26 lengkap dengan Hook (3 detik pertama), Jalan Cerita (POV), dan Punchline (Lucu/Plot twist).\n"
-        "3. 📌 REKOMENDASI CAPTION & HASHTAG: Berikan saran caption santai/lucu dan hashtag relevan.\n\n"
-        "Gunakan bahasa Indonesia yang santai, komunikatif, relevan dengan anak muda, dan rapi agar mudah dibaca di WhatsApp."
+        "Berikan output dengan format WhatsApp (Gunakan huruf tebal dengan bintang *teks*, JANGAN gunakan markdown hashtag ### atau ####):\n\n"
+        "*1. 📊 TRENDING TOPIC HARI INI*\n"
+        "Rangkuman 2-3 topik/isu/relate moment yang sedang ramai di Indonesia saat ini.\n\n"
+        "*2. 🎭 IDE KONTEN KOMEDI (POV/Jokes)*\n"
+        "Buat 2 konsep skrip komedi singkat khas @candatawamu26 lengkap dengan Hook (3 detik pertama), Jalan Cerita (POV), dan Punchline (Lucu/Plot twist).\n\n"
+        "*3. 📌 REKOMENDASI CAPTION & HASHTAG*\n"
+        "Berikan saran caption santai/lucu dan hashtag relevan.\n\n"
+        "Gunakan bahasa Indonesia yang santai, komunikatif, relevan dengan anak muda, dan rapi agar nyaman dibaca di WhatsApp."
     )
 
     headers_ai = {
