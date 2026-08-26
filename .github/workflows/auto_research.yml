@@ -2,36 +2,39 @@ name: AI Daily Trend Research
 
 on:
   schedule:
-    - cron: '0 23 * * *' 
+    # Berjalan otomatis setiap jam 06:00 WIB (23:00 UTC)
+    - cron: '0 23 * * *'
   workflow_dispatch:
 
 jobs:
   run-automation:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
       - name: Install Dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install requests
 
       - name: Run AI Research Script
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          python main.py
+          FONNTE_TOKEN: ${{ secrets.FONNTE_TOKEN }}
+          WA_TARGET_NUMBER: ${{ secrets.WA_TARGET_NUMBER }}
+        run: python main.py
 
       - name: Commit and Push Report File
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action Bot"
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Auto-update daily AI research report"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add laporan_riset_*.txt || true
+          git commit -m "auto: update laporan riset harian" || echo "Tidak ada perubahan file untuk di-commit"
           git push
