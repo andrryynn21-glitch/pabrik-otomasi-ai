@@ -2,7 +2,6 @@ import os
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import requests
-import google.generativeai as genai
 
 def ambil_tren_realtime():
     """Mengambil 5 tren terkini secara real-time dari Google News RSS"""
@@ -18,15 +17,12 @@ def ambil_tren_realtime():
         print(f"Gagal mengambil tren: {e}")
         return ["Tren Digital 2026", "Teknologi AI & Komunitas Kreatif"]
 
-def analisis_dengan_gemini(tren_list):
-    """Mengirim data tren ke Gemini API untuk dianalisis jadi E-Book & Skrip Komedi"""
-    api_key = os.environ.get("GEMINI_API_KEY")
+def analisis_dengan_openrouter(tren_list):
+    """Mengirim data tren ke OpenRouter API (Gratis & Stabil)"""
+    api_key = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        print("PERINGATAN: GEMINI_API_KEY tidak ditemukan!")
-        return "Gagal analisis: API Key tidak tersedia."
+        return "Gagal analisis: API Key tidak ditemukan di GitHub Secrets!"
 
-    genai.configure(api_key=api_key)
-    
     daftar_tren_str = "\n".join([f"- {t}" for t in tren_list])
     
     prompt = f"""
@@ -48,44 +44,58 @@ def analisis_dengan_gemini(tren_list):
        - Call to Action (CTA) jualan E-Book tersebut
     """
     
+    url = "https://openrouter.ai/api/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "json"
+    }
+    payload = {
+        # Menggunakan model gratis dari OpenRouter
+        "model": "google/gemini-2.0-flash-001:free", 
+        "messages": [
+            {"role": "user", "content": prompt}
+        ]
+    }
+    
     try:
-        # Gunakan pemanggilan spesifik ini agar v1beta mengenali model dengan tepat
-        model = genai.GenerativeModel('models/gemini-1.5-flash-latest')
-        response = model.generate_content(prompt)
-        return response.text
+        res = requests.post(url, headers=headers, json=payload, timeout=30)
+        if res.status_code == 200:
+            data = res.json()
+            return data['choices'][0]['message']['content']
+        else:
+            return f"Error OpenRouter API ({res.status_code}): {res.text}"
     except Exception as e:
-        print(f"Error saat memanggil Gemini API: {e}")
-        return f"Error Gemini API: {e}"
+        return f"Error HTTP Request: {e}"
 
 def job_riset_otomatis_harian():
     waktu_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     tanggal_file = datetime.now().strftime("%Y-%m-%d")
-    print(f"[{waktu_sekarang}] Memulai Riset Real-Time + AI Gemini...")
+    print(f"[{waktu_sekarang}] Memulai Riset Real-Time + OpenRouter AI...")
     
     # 1. Tarik Tren
     tren = ambil_tren_realtime()
     print("-> Berhasil menarik berita real-time!")
     
-    # 2. Analisis via Gemini AI
-    print("-> Mengirim data ke Gemini AI untuk generate ide E-Book & Skrip...")
-    hasil_ai = analisis_dengan_gemini(tren)
+    # 2. Analisis via AI
+    print("-> Mengirim data ke OpenRouter AI...")
+    hasil_ai = analisis_dengan_openrouter(tren)
     
     # 3. Simpan ke File Laporan
     filename = f"laporan_riset_{tanggal_file}.txt"
     with open(filename, "w", encoding="utf-8") as f:
         f.write("==============================================================\n")
-        f.write(f"  PABRIK OTOMASI AI: HASIL ANALISIS GEMINI AI & TREN REAL-TIME\n")
+        f.write(f"  PABRIK OTOMASI AI: HASIL ANALISIS AI & TREN REAL-TIME\n")
         f.write(f"  Waktu Eksekusi: {waktu_sekarang}\n")
         f.write("==============================================================\n\n")
         f.write("--- [DATA TREN REAL-TIME] ---\n")
         for i, t in enumerate(tren, 1):
             f.write(f"{i}. {t}\n")
         f.write("\n==============================================================\n")
-        f.write("--- [ANALYSIS & GENERATION BY GEMINI AI] ---\n")
+        f.write("--- [ANALYSIS & GENERATION BY OPENROUTER AI] ---\n")
         f.write("==============================================================\n\n")
         f.write(hasil_ai)
         f.write("\n\n==============================================================\n")
-        f.write(" Generated Automatically by GitHub Actions & Gemini API\n")
+        f.write(" Generated Automatically by GitHub Actions & OpenRouter API\n")
         
     print(f"-> Berhasil! Hasil analisis AI tersimpan di {filename}")
 
