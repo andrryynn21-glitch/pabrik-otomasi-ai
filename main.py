@@ -32,8 +32,8 @@ def run_research():
         "Content-Type": "application/json"
     }
     
-    payload_ai = {
-        "model": "openrouter/free",
+payload_ai = {
+        "model": "google/gemini-2.0-flash-exp:free",
         "messages": [
             {"role": "user", "content": prompt_text}
         ]
