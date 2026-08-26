@@ -3,22 +3,23 @@ import os
 import requests
 
 def get_free_models():
-    """Mengambil daftar semua model gratis yang tersedia di OpenRouter secara dinamis."""
+    """Mengambil daftar model gratis dari OpenRouter secara dinamis."""
     try:
-        res = requests.get("https://openrouter.ai/api/v1/models", timeout=15)
+        res = requests.get("https://openrouter.ai/api/v1/models", timeout=10)
         if res.status_code == 200:
             data = res.json().get("data", [])
-            # Filter otomatis SEMUA model yang berakhiran :free
-            free_models = [m["id"] for m in data if m.get("id", "").endswith(":free")]
+            # Ambil semua model yang berakhiran :free
+            free_models = [m["id"] for m in data if isinstance(m, dict) and m.get("id", "").endswith(":free")]
             if free_models:
-                print(f"-> Ditemukan {len(free_models)} model gratisan di OpenRouter!")
-                return free_models
+                print(f"-> Ditemukan {len(free_models)} model gratisan di OpenRouter.")
+                # Ambil maksimal 15 model pertama agar runtime cepat
+                return free_models[:15]
     except Exception as e:
-        print(f"-> Gagal mengambil katalog model OpenRouter secara dinamis: {e}")
+        print(f"-> Gagal mengambil katalog model dinamis: {e}")
     
-    # Fallback daftar manual jika fetch katalog utama bermasalah
+    # Fallback daftar model gratis yang dikenal stabil
     return [
-        "google/gemma-4-31b-it:free",
+        "google/gemma-2-9b-it:free",
         "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
         "minimax/minimax-m3:free",
         "meta-llama/llama-3.3-70b-instruct:free",
@@ -39,7 +40,7 @@ def run_research():
         print("-> Error: OPENROUTER_API_KEY tidak ditemukan di environment.")
         return
 
-   prompt_text = (
+    prompt_text = (
         "Kamu adalah pakar strategi konten komedi sosial media dan penulisan skrip kreatif untuk akun @candatawamu26.\n"
         "Tugas utama kamu adalah memberikan laporan riset tren harian dan draft skrip komedi berkualitas tinggi.\n\n"
         "Berikan output dengan format WhatsApp (Gunakan huruf tebal dengan bintang *teks*, JANGAN gunakan markdown hashtag ### atau ####):\n\n"
@@ -59,9 +60,7 @@ def run_research():
         "X-Title": "Pabrik Otomasi AI"
     }
     
-    # Ambil SEMUA model gratisan secara otomatis dari OpenRouter API
     candidate_models = get_free_models()
-
     output_text = None
 
     for model_name in candidate_models:
@@ -72,18 +71,19 @@ def run_research():
         }
 
         try:
-            response_ai = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers_ai, json=payload_ai, timeout=45)
-            res_data = response_ai.json()
+            # Timeout dipercepat ke 15 detik per model
+            response_ai = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers_ai, json=payload_ai, timeout=15)
             
-            if response_ai.status_code == 200 and "choices" in res_data and len(res_data["choices"]) > 0:
-                output_text = res_data["choices"][0]["message"]["content"]
-                print(f"-> BERHASIL! Mendapat respon dari model: {model_name}")
-                break
+            if response_ai.status_code == 200:
+                res_data = response_ai.json()
+                if "choices" in res_data and len(res_data["choices"]) > 0:
+                    output_text = res_data["choices"][0]["message"]["content"]
+                    print(f"-> BERHASIL! Respon didapat dari model: {model_name}")
+                    break
             else:
-                err_msg = res_data.get('error', {}).get('message', 'Busy/Limit') if isinstance(res_data.get('error'), dict) else res_data.get('error', 'Busy/Limit')
-                print(f"-> Skip {model_name}: {err_msg}")
+                print(f"-> Skip {model_name} (Status Code: {response_ai.status_code})")
         except Exception as e:
-            print(f"-> Error koneksi ke {model_name}: {e}")
+            print(f"-> Error/Timeout pada {model_name}: {e}")
 
     if not output_text:
         output_text = "Gagal mengambil laporan dari AI. Semua kandidat model gratisan sedang sibuk/offline."
@@ -112,7 +112,7 @@ def run_research():
         }
         
         try:
-            res_fonnte = requests.post(url_fonnte, data=payload_fonnte, headers=headers_fonnte)
+            res_fonnte = requests.post(url_fonnte, data=payload_fonnte, headers=headers_fonnte, timeout=15)
             print("-> Response Fonnte:", res_fonnte.json())
         except Exception as e:
             print(f"-> Error saat mengontak API Fonnte: {e}")
