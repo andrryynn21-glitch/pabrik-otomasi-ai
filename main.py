@@ -2,6 +2,32 @@ import datetime
 import os
 import requests
 
+def get_free_models():
+    """Mengambil daftar semua model gratis yang tersedia di OpenRouter secara dinamis."""
+    try:
+        res = requests.get("https://openrouter.ai/api/v1/models", timeout=15)
+        if res.status_code == 200:
+            data = res.json().get("data", [])
+            # Filter otomatis SEMUA model yang berakhiran :free
+            free_models = [m["id"] for m in data if m.get("id", "").endswith(":free")]
+            if free_models:
+                print(f"-> Ditemukan {len(free_models)} model gratisan di OpenRouter!")
+                return free_models
+    except Exception as e:
+        print(f"-> Gagal mengambil katalog model OpenRouter secara dinamis: {e}")
+    
+    # Fallback daftar manual jika fetch katalog utama bermasalah
+    return [
+        "google/gemma-4-31b-it:free",
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+        "minimax/minimax-m3:free",
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "deepseek/deepseek-r1:free",
+        "liquid/lfm2.5-2.6b:free",
+        "mistralai/mistral-7b-instruct:free",
+        "qwen/qwen-2.5-72b-instruct:free"
+    ]
+
 def run_research():
     print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Memulai Riset Real-Time + OpenRouter AI...")
     
@@ -30,12 +56,8 @@ def run_research():
         "X-Title": "Pabrik Otomasi AI"
     }
     
-    # Daftar model gratis pilihan yang akan dicoba satu per satu jika ada yang error
-    candidate_models = [
-        "meta-llama/llama-3.3-70b-instruct:free",
-        "deepseek/deepseek-r1:free",
-        "google/gemma-2-9b-it:free"
-    ]
+    # Ambil SEMUA model gratisan secara otomatis dari OpenRouter API
+    candidate_models = get_free_models()
 
     output_text = None
 
@@ -47,15 +69,16 @@ def run_research():
         }
 
         try:
-            response_ai = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers_ai, json=payload_ai, timeout=60)
+            response_ai = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers_ai, json=payload_ai, timeout=45)
             res_data = response_ai.json()
             
             if response_ai.status_code == 200 and "choices" in res_data and len(res_data["choices"]) > 0:
                 output_text = res_data["choices"][0]["message"]["content"]
-                print(f"-> Berhasil mendapat respon dari model {model_name}!")
+                print(f"-> BERHASIL! Mendapat respon dari model: {model_name}")
                 break
             else:
-                print(f"-> Model {model_name} gagal/bermasalah: {res_data.get('error', res_data)}")
+                err_msg = res_data.get('error', {}).get('message', 'Busy/Limit') if isinstance(res_data.get('error'), dict) else res_data.get('error', 'Busy/Limit')
+                print(f"-> Skip {model_name}: {err_msg}")
         except Exception as e:
             print(f"-> Error koneksi ke {model_name}: {e}")
 
