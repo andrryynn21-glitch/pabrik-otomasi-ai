@@ -5,7 +5,6 @@ import requests
 def run_research():
     print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Memulai Riset Real-Time + OpenRouter AI...")
     
-    # 1. Mengambil Credentials dari Environment (GitHub Secrets)
     openrouter_key = os.environ.get("OPENROUTER_API_KEY")
     fonnte_token = os.environ.get("FONNTE_TOKEN")
     wa_target = os.environ.get("WA_TARGET_NUMBER")
@@ -14,7 +13,6 @@ def run_research():
         print("-> Error: OPENROUTER_API_KEY tidak ditemukan di environment.")
         return
 
-    # 2. Prompt Spesifik Komedi & Riset Tren @candatawamu26
     prompt_text = (
         "Kamu adalah pakar strategi konten komedi sosial media dan penulisan skrip kreatif untuk akun @candatawamu26.\n"
         "Tugas utama kamu adalah memberikan laporan riset tren harian dan draft skrip komedi berkualitas tinggi.\n\n"
@@ -25,39 +23,55 @@ def run_research():
         "Gunakan bahasa Indonesia yang santai, komunikatif, relevan dengan anak muda, dan rapi agar mudah dibaca di WhatsApp."
     )
 
-    print("-> Mengirim data ke OpenRouter AI...")
-    
     headers_ai = {
         "Authorization": f"Bearer {openrouter_key}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://github.com",
+        "X-Title": "Pabrik Otomasi AI"
     }
     
-payload_ai = {
-        "model": "google/gemma-4-31b-it:free",
-        "messages": [
-            {"role": "user", "content": prompt_text}
-        ]
-    }
+    # Daftar model gratis pilihan yang akan dicoba satu per satu jika ada yang error
+    candidate_models = [
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "deepseek/deepseek-r1:free",
+        "google/gemma-2-9b-it:free"
+    ]
 
-    try:
-        response_ai = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers_ai, json=payload_ai)
-        response_ai.raise_for_status()
-        result_json = response_ai.json()
-        output_text = result_json["choices"][0]["message"]["content"]
-    except Exception as e:
-        print(f"-> Error saat memanggil OpenRouter AI: {e}")
-        return
+    output_text = None
 
-    # 3. Simpan Hasil Riset ke File Teks
+    for model_name in candidate_models:
+        print(f"-> Mencoba memanggil model: {model_name}...")
+        payload_ai = {
+            "model": model_name,
+            "messages": [{"role": "user", "content": prompt_text}]
+        }
+
+        try:
+            response_ai = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers_ai, json=payload_ai, timeout=60)
+            res_data = response_ai.json()
+            
+            if response_ai.status_code == 200 and "choices" in res_data and len(res_data["choices"]) > 0:
+                output_text = res_data["choices"][0]["message"]["content"]
+                print(f"-> Berhasil mendapat respon dari model {model_name}!")
+                break
+            else:
+                print(f"-> Model {model_name} gagal/bermasalah: {res_data.get('error', res_data)}")
+        except Exception as e:
+            print(f"-> Error koneksi ke {model_name}: {e}")
+
+    if not output_text:
+        output_text = "Gagal mengambil laporan dari AI. Semua kandidat model gratisan sedang sibuk/offline."
+
+    # Simpan Hasil Riset ke File Teks
     today_str = datetime.datetime.now().strftime('%Y-%m-%d')
     filename = f"laporan_riset_{today_str}.txt"
     
     with open(filename, "w", encoding="utf-8") as f:
         f.write(output_text)
         
-    print(f"-> Berhasil! Hasil analisis AI tersimpan di {filename}")
+    print(f"-> Hasil analisis AI tersimpan di {filename}")
 
-    # 4. Pengiriman Notifikasi Hasil Riset ke WhatsApp via Fonnte
+    # Pengiriman Notifikasi via Fonnte
     if fonnte_token and wa_target:
         print("-> Mengirim laporan ke WhatsApp via Fonnte...")
         url_fonnte = "https://api.fonnte.com/send"
@@ -77,7 +91,7 @@ payload_ai = {
         except Exception as e:
             print(f"-> Error saat mengontak API Fonnte: {e}")
     else:
-        print("-> Error: Secret FONNTE_TOKEN atau WA_TARGET_NUMBER belum terdeteksi di GitHub Secrets.")
+        print("-> Error: Secret FONNTE_TOKEN atau WA_TARGET_NUMBER belum terdeteksi.")
 
 if __name__ == "__main__":
     run_research()
