@@ -51,8 +51,7 @@ def analisis_dengan_openrouter(tren_list):
     }
     payload = {
         # Menggunakan model gratis dari OpenRouter
-        "model": "google/gemini-2.0-flash-001:free", 
-        "messages": [
+"model": "openrouter/free",        "messages": [
             {"role": "user", "content": prompt}
         ]
     }
