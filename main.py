@@ -2,66 +2,93 @@ import os
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import requests
+from google import genai
 
 def ambil_tren_realtime():
-    """Mengambil 5 tren/berita terkini secara real-time dari RSS Google News"""
+    """Mengambil 5 tren terkini secara real-time dari Google News RSS"""
     url = "https://news.google.com/rss?hl=id&gl=ID&ceid=ID:id"
     headers = {'User-Agent': 'Mozilla/5.0'}
-    
     try:
         response = requests.get(url, headers=headers, timeout=10)
         root = ET.fromstring(response.content)
-        
         items = root.findall('./channel/item')[:5]
-        topik_list = []
-        for item in items:
-            title = item.find('title').text if item.find('title') is not None else "Tidak ada judul"
-            topik_list.append(title)
+        topik_list = [item.find('title').text for item in items if item.find('title') is not None]
         return topik_list
     except Exception as e:
         print(f"Gagal mengambil tren: {e}")
-        return ["Kreativitas Pemuda & Tren Digital", "Peluang Otomasi Bisnis 2026"]
+        return ["Tren Digital 2026", "Teknologi AI & Komunitas Kreatif"]
+
+def analisis_dengan_gemini(tren_list):
+    """Mengirim data tren ke Gemini API untuk dianalisis jadi E-Book & Skrip Komedi"""
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        print("PERINGATAN: GEMINI_API_KEY tidak ditemukan!")
+        return "Gagal analisis: API Key tidak tersedia."
+
+    client = genai.Client(api_key=api_key)
+    
+    daftar_tren_str = "\n".join([f"- {t}" for t in tren_list])
+    
+    prompt = f"""
+    Kamu adalah Manajer Produk Digital sekaligus Creative Content Strategist untuk akun komedi Gen-Z @candatawamu26.
+    Berikut adalah 5 berita/tren viral terkini hari ini di Indonesia:
+    {daftar_tren_str}
+
+    Tolong buatkan analisis dan draf rencana otomatis dalam format teks rapi dengan struktur:
+    1. BERITA/TOPIK PILIHAN UTAMA: (Pilih 1 topik paling menarik dari daftar di atas)
+    2. IDE PRODUK DIGITAL (E-BOOK / GUIDE):
+       - Judul E-Book yang Catchy & Menjual
+       - Target Audience
+       - Outline 4 Bab Utama (jelaskan singkat isi tiap babnya)
+       - Solusi/Cuan yang didapat pembaca
+    3. DRAF SKRIP KONTEN PROMOSI POV/KOMEDI (@candatawamu26):
+       - Sudut Pandang (POV)
+       - Hook 3 Detik Pertama (lucu/relatable)
+       - Alur Aksi/Ekspresi Komedi
+       - Call to Action (CTA) jualan E-Book tersebut
+    """
+    
+    try:
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+        )
+        return response.text
+    except Exception as e:
+        print(f"Error saat memanggil Gemini API: {e}")
+        return f"Error Gemini API: {e}"
 
 def job_riset_otomatis_harian():
     waktu_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     tanggal_file = datetime.now().strftime("%Y-%m-%d")
-    print(f"[{waktu_sekarang}] Memulai Riset Otomatis Produk Digital & Konten...")
+    print(f"[{waktu_sekarang}] Memulai Riset Real-Time + AI Gemini...")
     
-    tren_terbaru = ambil_tren_realtime()
-    topik_utama = tren_terbaru[0] if tren_terbaru else "Tren Digital Harian"
+    # 1. Tarik Tren
+    tren = ambil_tren_realtime()
+    print("-> Berhasil menarik berita real-time!")
     
+    # 2. Analisis via Gemini AI
+    print("-> Mengirim data ke Gemini AI untuk generate ide E-Book & Skrip...")
+    hasil_ai = analisis_dengan_gemini(tren)
+    
+    # 3. Simpan ke File Laporan
     filename = f"laporan_riset_{tanggal_file}.txt"
-    
     with open(filename, "w", encoding="utf-8") as f:
         f.write("==============================================================\n")
-        f.write(f"  PABRIK OTOMASI AI: MODUL 1 - RISET PRODUK DIGITAL & KONTEN\n")
+        f.write(f"  PABRIK OTOMASI AI: HASIL ANALISIS GEMINI AI & TREN REAL-TIME\n")
         f.write(f"  Waktu Eksekusi: {waktu_sekarang}\n")
         f.write("==============================================================\n\n")
-        
-        f.write("--- [1. TREN VIRAL REAL-TIME HARI INI] ---\n")
-        for i, t in enumerate(tren_terbaru, 1):
+        f.write("--- [DATA TREN REAL-TIME] ---\n")
+        for i, t in enumerate(tren, 1):
             f.write(f"{i}. {t}\n")
-            
-        f.write("\n--- [2. STRUKTUR PRODUK DIGITAL (MINI E-BOOK / GUIDE)] ---\n")
-        f.write(f"Topik Utama Viral : {topik_utama}\n")
-        f.write(f"Judul E-Book      : Panduan Kilat & Peluang Cuan dari '{topik_utama[:40]}...'\n")
-        f.write("Format Produk     : PDF Guide / Playbook (10-15 Halaman)\n")
-        f.write("Outline Isi E-Book:\n")
-        f.write("  - Bab 1: Bedah Isu & Kenapa Tren Ini Viral Banget\n")
-        f.write("  - Bab 2: 3 Peluang Cuan / Manfaat Nyata Buat Pemula\n")
-        f.write("  - Bab 3: Langkah Praktis Eksekusi Tanpa Modal\n")
-        f.write("  - Bab 4: Rekomendasi Tools & AI Pendukung Otomatis\n")
-        f.write("Target Market     : Gen-Z, Content Creator, & Pemburu Peluang Digital\n")
+        f.write("\n==============================================================\n")
+        f.write("--- [ANALYSIS & GENERATION BY GEMINI AI] ---\n")
+        f.write("==============================================================\n\n")
+        f.write(hasil_ai)
+        f.write("\n\n==============================================================\n")
+        f.write(" Generated Automatically by GitHub Actions & Gemini API\n")
         
-        f.write("\n--- [3. DRAF KONTEN PROMOSI POV/KOMEDI (CANDATAWAMU26)] ---\n")
-        f.write("Sudut Pandang (POV): 'POV lu panik karena orang lain udah pada paham tren ini'\n")
-        f.write(f"Hook Skrip        : 'POV: Lu baru bangun tidur dan kaget liat orang-orang udah bahas {topik_utama[:25]}...'\n")
-        f.write("Visual/Act        : Muka panik, bolak-balik ngetik di laptop, ekspresi bingung tapi kocak.\n")
-        f.write("Call to Action    : 'Daripada lu bengong sendirian, amankan E-Book panduannya di link bio sekarang!'\n\n")
-        f.write("==============================================================\n")
-        f.write(" Generated Automatically by GitHub Actions Automation Pipeline\n")
-    
-    print(f"-> Laporan Produk Digital & Konten Berhasil Disimpan di {filename}!")
+    print(f"-> Berhasil! Hasil analisis AI tersimpan di {filename}")
 
 if __name__ == "__main__":
     job_riset_otomatis_harian()
