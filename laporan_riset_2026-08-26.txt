@@ -1,20 +1,56 @@
 ==============================================================
   PABRIK OTOMASI AI: HASIL ANALISIS AI & TREN REAL-TIME
-  Waktu Eksekusi: 2026-08-26 19:17:40
+  Waktu Eksekusi: 2026-08-26 19:22:15
 ==============================================================
 
 --- [DATA TREN REAL-TIME] ---
 1. Persiapan Massa AMPB Jelang Aksi Damai di Depan Gedung DPR - detikNews
 2. Iran Ancam Setop Ekspor Minyak di Teluk Buntut Sanksi Baru AS - detikNews
-3. Polda Metro Jaya Pastikan Rekening Botok Pati Sudah Bisa Dibuka Lagi - detikNews
-4. Prabowo ke Korban Gempa NTT: MBG Mau Diteruskan atau Tidak? - Kompas.com
-5. ☀️ Pemerintah Mulai Bangun Program PLTS 100 GWp, Target Rampung dalam 3 Tahun - Stockbit Snips
+3. Akhirnya, Bank Mandiri Aktifkan Lagi Rekening Mas Botok Pati untuk Aksi 27 Agustus - AFU.id
+4. ☀️ Pemerintah Mulai Bangun Program PLTS 100 GWp, Target Rampung dalam 3 Tahun - Stockbit Snips
+5. Prabowo ke Korban Gempa NTT: MBG Mau Diteruskan atau Tidak? - Kompas.com
 
 ==============================================================
 --- [ANALYSIS & GENERATION BY OPENROUTER AI] ---
 ==============================================================
 
-Error OpenRouter API (404): {"error":{"message":"No endpoints found for google/gemini-2.0-flash-001:free.","code":404},"user_id":"user_3HzEH2RnKctu8jOamAjTV1bvy8L"}
+**1. BERITA/TOPIK PILIHAN UTAMA**  
+**Berita:** *Akhirnya, Bank Mandiri Aktifkan Lagi Rekening Mas Botok Pati untuk Aksi 27 Agustus* – AFU.id  
+
+Alasan pemilihan:  
+- Cerita tentang “Mas Botok Pati” (sebutan lucu untuk nasabah muda yang suka “main-main” dengan rekening) sangat cocok untuk konten komedi Gen‑Z.  
+- Memungkinkan kita menggabungkan humor tentang finansial pribadi dengan edukasi sederhana tentang manajemen uang, tabungan, dan investasi untuk pemula.  
+
+---
+
+**2. IDE PRODUK DIGITAL (E‑BOOK / GUIDE)**  
+
+| Elemen | Detail |
+|--------|--------|
+| **Judul E‑Book yang Catchy & Menjual** | **“Botok Pati Finance: Cara Jadi Nahkoda Keuangan Tanpa Kesesatan”** |
+| **Target Audience** | - Wanita & pria usia 18‑25 tahun (Gen‑Z) yang baru mulai bekerja atau kuliah.<br>- Pengguna TikTok/IG yang suka konten humor dan ingin belajar finansial dengan cara santai.<br>- Nasabah Bank Mandiri (atau bank lain) yang ingin memaksimalkan fitur rekening mereka. |
+| **Outline 4 Bab Utama** | **Bab 1 –Kenalan dengan Rekening Mas Botok Pati**<br>• Apa sebenarnya “Mas Botok Pati” (terminologi slang) dan mengapa Bank Mandiri mengaktifkannya lagi.<br>• Fitur‑fitur utama: transfer gratis, cashback, dan promo khusus untuk transaksi QRIS.<br>• Cara membuka rekening dalam 5 menit lewat aplikasi Mobile Banking.<br><br>**Bab 2 –Dasar‑Dasar Pengelolaan Uang Harian**<br>• Rule 50/30/20 sederhana untuk pemula.<br>• Cara membuat “tabungan botok” (tabungan otomatis) lehat fitur Auto‑Save di Bank Mandiri.<br>• Tips menghindari “overdraft botok” (overdraft karena belanja impulsif).<br><br>**Bab 3 –Investasi Kecil untuk Pemula (Botok‑Style)**<br>• Pengenalan reksa dana pasar uang dan emas digital dengan minimal Rp10.000.<br>• Cara menggunakan fitur “Investasi Mandiri” lewat aplikasi.<br>• Studi kasus: how a 20‑tahun‑old turned Rp500 ribu into Rp2,5 juta dalam 6 bulan.<br><br>**Bab 4 –Level Up: Side Hustle & Passive Income dengan Botok**<br>• Ide sampingan yang cocok untukGen‑Z (reseller, content creator, freelance micro‑task).<br>• Cara mengalokasikan hasil side hustle ke rekening dan investasi otomatis.<br>• Checklist “Botok Pati Finance Review” – evaluasi bulanan untuk tetap on track. |
+| **Solusi/Cuan yang Didapat Pembaca** | - **Penguasaan dasar keuangan** dalam meno 1 jam baca (tanpa jargon membingungkan).<br>- **Tabungan otomatis** yang tumbuh tanpa perlu berpikir setiap hari.<br>- **Pendapatan pasif awal** dari investasi kecil yang dapat dicairkan kapan saja.<br>- **Rencana aksi jelas** (cek‑list harian, mingguan, bulanan) sehingga pembaca tidak lagi merasa “kalah” dengan uang.<br>- **Bonus:** Template spreadsheet “Botok Budget Tracker” yang bisa diunduh gratis setelah pembelian e‑book. |
+
+---
+
+**3. DRAF SKRIP KONTEN PROMOSI POV/KOMEDI (@candatawamu26)**  
+
+| Komponen | Isi |
+|----------|-----|
+| **Sudut Pandang (POV)** | *POV:* Kamu sebagai seorang mahasiswa baru yang baru saja mendapatkan uang saku pertama dari orang tua, tapi terus‑terusan “nganggur” di rekening karena tidak tahu cara mengelolanya. |
+| **Hook 3 Detik Pertama (lucu/relatable)** | *[Tampilan selfie kamera depan, ekspresi bingung]* “Hai, ini saya lagi lihat saldo… *nganga*… eh, kok cuma Rp12.000?!” *(suara voice‑over: “Selamat datang di dunia Mas Botok Pati!”)* |
+| **Alur Aksi/Ekspresi Komedi** | 1. **Scene 1 – Panic:** Kamu menggesek‑gesek layar hp, mencari “cara cepat kaya” di TikTok, lalu muncul reklame “Jadi jutawan dalam 1 malam!” – kamu tertawa menggeleng.<br>2. **Scene 2 – Aha! Moment:** Layar bergeser ke tampilan aplikasi Bank Mandiri, kamu mengeklik “Rekening Mas Botok Pati”, lalu muncul animasi botok (makanan) yang melompat dan berbisik: “Aku ada untuk menabung kamu!”<br>3. **Scene 3 – Tutorial Cepat:** Dalam 5 detik kamu menunjukkan tiga fitur: <br> • **Auto‑Save** (setoran otomatis Rp5.000/hari)<br> • **Cashback QRIS** 10% untuk kopi<br> • **Investasi Kecil** (reksa dana uang dari Rp10.000).<br>Sambil menunjuk layar, kamu membuat ekspresi “wow, gampang banget!” dan menambah efek suara “ding!” setiap kali fitur aktif.<br>4. **Scene 4 – Hasil Akhir:** Kamu menampilkan saldo yang sekarang sudah Rp1.200.000 setelah 3 bulan, sambil makan botok dan berkata: “Ini adalah hasil dari Mas Botok Pati, bukan dari tukang jualan impian!” |
+| **Call to Action (CTA) jualan E‑Book** | *[Layar berakhir dengan tampilan sampul e‑book dan kotak teks]*<br>“Mau tahu rahasia botok keuangan yang bikin saldo tumbuh tanpa stres? Download e‑book **‘Botok Pati Finance: Cara Jadi Nahkoda Keuangan Tanpa Kesesatan’** sekarang! Link di bio. Promo pertama 50 pembeli dapat gratis template Botok Budget Tracker. Jangan sampai Mas Botok Pati kamu masih kosong—ayo, gabung!” <br>*(Tambahkan sticker “Swipe Up” atau “Link in Bio” sesuai platform).*
+
+---  
+
+**Catatan Produksi**  
+- Durasi video ideal: 25‑30 detik (Sesuai tiktok/IG reels).  
+- Gunakan background musik upbeat (beat drops pada setiap penampakan fitur).  
+- Tambahkan teks overlay besar untuk poin‑poin utama agar mudah dicerna tanpa suara.  
+
+Dengan skrip ini, @candatawamu26 dapat menarik perhatian Gen‑Z dengan humor yang familiar sekaligus mengedukasi dan mengkonversi audiens menjadi pembeli e‑book “Botok Pati Finance”. Selamat membuat konten!
 
 ==============================================================
  Generated Automatically by GitHub Actions & OpenRouter API
