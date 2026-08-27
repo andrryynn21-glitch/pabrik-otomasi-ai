@@ -1,8 +1,8 @@
 name: AI Daily Trend Research
 
 on:
+  workflow_dispatch:
   schedule:
-    # Berjalan otomatis setiap jam 06:00 WIB (23:00 UTC)
     - cron: '0 23 * * *'
   workflow_dispatch:
 
